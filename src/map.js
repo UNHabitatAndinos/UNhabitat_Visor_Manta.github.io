@@ -39,6 +39,7 @@ info.onAdd = function (map) {
 info.update = function (props) {
     this._div.innerHTML = (props ?
         'Cantón ' + props.PARROQUIA + '<br />' + 
+        '' + props.PARROQUIA1 + '<br />' + 
         'Proyección población ' + props.POB_2020.toFixed(0)  + ' (año 2020) <br />' +  '<br />' + 
         
         '<b>Vivienda </b>' + '<br />' +
@@ -50,16 +51,18 @@ info.update = function (props) {
         'Internet: ' + props.Internet.toFixed(0) + ' %' + '<br />' +'<br />' +
 
         '<b>Salud</b>' + '<br />' +
-        'Proximidad centros de salud: ' + props.DIST_SALUD.toFixed(0) + ' m' + '<br />' +  
+        'Proximidad centros de salud: ' + props.DxP_SALUD.toFixed(0) + ' m' + '<br />' +  
         'Contaminación residuos sólidos: ' + props.CON_SOL.toFixed(2) + ' %' + '<br />' +  '<br />' +   
         
         '<b>Educación, cultura y diversidad </b>' + '<br />' +
-        'Proximidad equipamientos culturales: ' + props.DIST_BIBLI.toFixed(0) + ' m' + '<br />' +
-        'Proximidad equipamientos educativos: ' + props.DIST_EDUC.toFixed(0) + ' m' + '<br />' +  '<br />' +  
+        'Proximidad equipamientos culturales: ' + props.DxP_BIBLIO.toFixed(0) + ' m' + '<br />' +
+        'Proximidad equipamientos educativos: ' + props.DxP_EDUCA.toFixed(0) + ' m' + '<br />' +  '<br />' +  
         
         '<b>Espacios públicos, seguridad y recreación </b>' + '<br />' +
-        'Proximidad espacio público: ' + props.DIST_EP.toFixed(0) + ' m' + '<br />' +
-        'Densidad residencial: ' + props.PobXHas.toFixed(2) +'<br />' + '<br />' +
+        'Proximidad espacio público: ' + props.DxP_EP.toFixed(0) + ' m' + '<br />' +
+        'M² per capita de espacio público: ' + props.M2_ESP_EP.toFixed(0) + ' m' + '<br />' +
+        'Densidad residencial: ' + props.PobXHas.toFixed(2) +'<br />' + 
+        'Diversidad usos del suelo: ' + props.Shannon.toFixed(2) + '/1.61' +'<br />' + '<br />' +
 
         '<b>Oportunidades económicas </b>' + '<br />' +
         'Desempleo: ' + props.T_Desemp.toFixed(0) + ' %' + '<br />' +
@@ -152,38 +155,38 @@ function changeLegend(props) {
 }
 
 var legends = {
-    DIST_SALUD: {
+    DxP_SALUD: {
         title: "Proximidad equipamientos de salud",
         subtitle: "Distancia en metros con factor inclinación del terreno", 
         elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 500</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 1000</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>1001 - 2000</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>2001 - 3000</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>3001 - 6776</div>',
+        elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 1500</div>', 
+        elem3: '<div><span  style= "color:#f4f466">▉</span>1501 - 3000</div>',
+        elem4: '<div><span  style= "color:#fdae61">▉</span>3001 - 5000</div>',
+        elem5: '<div><span  style= "color:#d7191c">▉</span>5001 - 11858</div>',
         elem6: '<br />Factor de inclinación del terreno <br />A nivel: 1<br /> Ligeramente inclinada: 1.25<br /> Moderadamente inclinada: 1.5<br /> Fuertemente inclinada: 1.75<br /> Escarpada: 2<br />',
         elem7: '',
         elem8: "Alcaldía de Manta 2020",
     },
-    DIST_EDUC: {
+    DxP_EDUCA: {
         title: "Proximidad equipamientos de educación",
         subtitle: "Distancia en metros con factor inclinación del terreno", 
-        elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 100</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>101 - 300</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>301 - 500</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>501 - 1000</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>1001 - 2923</div>',
+        elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 300</div>',
+        elem2: '<div><span  style= "color:#a6d96a">▉</span>301 - 500</div>', 
+        elem3: '<div><span  style= "color:#f4f466">▉</span>501 - 1000</div>',
+        elem4: '<div><span  style= "color:#fdae61">▉</span>1001 - 2000</div>',
+        elem5: '<div><span  style= "color:#d7191c">▉</span>2001 - 4384</div>',
         elem6: '<br />Factor de inclinación del terreno <br />A nivel: 1<br /> Ligeramente inclinada: 1.25<br /> Moderadamente inclinada: 1.5<br /> Fuertemente inclinada: 1.75<br /> Escarpada: 2<br />',
         elem7: '',
         elem8: "Alcaldía de Manta 2020",
     },
-    DIST_EP: {
+    DxP_EP: {
         title: "Proximidad espacio público",
         subtitle: "Distancia en metros con factor inclinación del terreno", 
         elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 500</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 2000</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>2001 - 5000</div>',
+        elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 3000</div>', 
+        elem3: '<div><span  style= "color:#f4f466">▉</span>3001 - 5000</div>',
         elem4: '<div><span  style= "color:#fdae61">▉</span>5001 - 10000</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>10001 - 21572</div>',
+        elem5: '<div><span  style= "color:#d7191c">▉</span>10001 - 37538</div>',
         elem6: '<br />Factor de inclinación del terreno <br />A nivel: 1<br /> Ligeramente inclinada: 1.25<br /> Moderadamente inclinada: 1.5<br /> Fuertemente inclinada: 1.75<br /> Escarpada: 2<br />',
         elem7: '',
         elem8: "Google Earth 2021",
@@ -296,91 +299,19 @@ var legends = {
         elem7: '',
         elem8: "INEC Censo de Población y Vivienda 2010",
     },
-    DIST_BIBLI: {
+    DxP_BIBLIO: {
         title: "Proximidad equipamientos culturales",
         subtitle: "Distancia en metros con factor inclinación del terreno", 
         elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 500</div>',
         elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 2000</div>', 
         elem3: '<div><span  style= "color:#f4f466">▉</span>2001 - 5000</div>',
         elem4: '<div><span  style= "color:#fdae61">▉</span>5001 - 10000</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>10001 - 26274</div>',
+        elem5: '<div><span  style= "color:#d7191c">▉</span>10001 - 45810</div>',
         elem6: '<br />Factor de inclinación del terreno <br />A nivel: 1<br /> Ligeramente inclinada: 1.25<br /> Moderadamente inclinada: 1.5<br /> Fuertemente inclinada: 1.75<br /> Escarpada: 2<br />',
         elem7: '',
         elem8: "Google Earth 2021",
     },
-    MIX_TENE: {
-        title: "Diversidad tenencia",
-        subtitle: "Índice de Shannon-Wienner -  Nivel de diversidad por manzana",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>0.89 - 1.08</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>0.79 - 0.88</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>0.70 - 0.78</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>0.53 - 0.69</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>0.13 - 0.52</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    MIX_ETNIA: {
-        title: "Diversidad etnias y razas",
-        subtitle: "Índice de Shannon-Wienner -  Nivel de diversidad por manzana",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>0.51 - 0.82</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>0.38 - 0.50</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>0.28 - 0.37</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>0.19 - 0.27</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>0.00 - 0.18</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    MIX_EDAD: {
-        title: "Diversidad edades",
-        subtitle: "Índice de Shannon-Wienner -  Nivel de diversidad por manzana",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>1.47 - 1.65</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>1.39 - 1.46</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>1.30 - 1.38</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>1.12 - 1.29</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>0.59 - 1.11</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    MIX_EDU: {
-        title: "Diversidad nivel educativo",
-        subtitle: "Índice de Shannon-Wienner -  Nivel de diversidad por manzana",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>1.15 - 1.35</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>1.06 - 1.14</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>0.98 - 1.05</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>0.88 - 0.97</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>0.57 - 0.87</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    BRECHA_E: {
-        title: "Brecha género años promedio educación",
-        subtitle: "Relación años promedio educación de mujeres y hombres", 
-        elem1: '<div><span  style= "color:#1a9641">▉</span>0.52 - 0.79</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>0.80 - 0.89</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>0.90 - 0.96</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>0.97 - 1.09</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>1.10 - 1.64</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    ESC_ANOS: {
-        title: "Años promedio educación",
-        subtitle: "Años",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>13.79 - 17.27</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>12.35 - 13.78</div>',
-        elem3: '<div><span  style= "color:#f4f466">▉</span>11.02 - 12.34</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>9.32 - 11.01</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>4.24 - 9.31</div>',
-        elem6: '',
-        elem7: '',
-        elem8: "INEC - Enemdu 2019",
-    },
-    M2_EP_CA: {
+    M2_ESP_EP: {
         title: "M² per capita de espacio público",
         subtitle: "m²/habitante",
         elem1: '<div><span  style= "color:#1a9641">▉</span>Mayor 14</div>',
@@ -431,26 +362,14 @@ var legends = {
     Shannon: {
         title: "Diversidad usos del suelo",
         subtitle: "Índice de Shannon-Wienner -  Nivel de diversidad por manzana",
-        elem1: '<div><span  style= "color:#1a9641">▉</span>1.15 - 1.79</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>0.94 - 1.14</div>',
-        elem3: '<div><span  style= "color:#f4f466">▉</span>0.75 - 0.93</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>0.52 - 0.74</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>0.00 - 0.51</div>',
+        elem1: '<div><span  style= "color:#1a9641">▉</span>0.87 - 1.29</div>',
+        elem2: '<div><span  style= "color:#a6d96a">▉</span>0.60 - 0.86</div>',
+        elem3: '<div><span  style= "color:#f4f466">▉</span>0.37 - 0.59</div>',
+        elem4: '<div><span  style= "color:#fdae61">▉</span>0.16 - 0.36</div>',
+        elem5: '<div><span  style= "color:#d7191c">▉</span>0.00 - 0.15</div>',
         elem6: '',
         elem7: '',
         elem8: "Plan de Uso y Ocupación del Suelo 2020",
-    },
-    DxP_Comer: {
-        title: "Proximidad zonas de interés económico (servicios y comercio)",
-        subtitle: "Distancia en metros con factor de inclinación del terreno", 
-        elem1: '<div><span  style= "color:#1a9641">▉</span>0 - 500</div>',
-        elem2: '<div><span  style= "color:#a6d96a">▉</span>501 - 1500</div>', 
-        elem3: '<div><span  style= "color:#f4f466">▉</span>1501 - 3000</div>',
-        elem4: '<div><span  style= "color:#fdae61">▉</span>3001 - 5000</div>',
-        elem5: '<div><span  style= "color:#d7191c">▉</span>5001 - 7920</div>',
-        elem6: '<br />Factor de inclinación del terreno <br />A nivel: 1<br /> Ligeramente inclinada: 1.25<br /> Moderadamente inclinada: 1.5<br /> Fuertemente inclinada: 1.75<br /> Escarpada: 2<br />',
-        elem7: '',
-        elem8: "Licencia Metropolitana Única para el Ejercicio de Actividades Económicas 2020 - LUAE  es el permiso de funcionamiento que otorga el GAD del Distrito Metropolitano de Quito, al desarrollo de actividades económicas en un establecimiento ubicado en el Distrito Metropolitano de Quito.",
     },
     T_Desemp: {
         title: "Tasa de desempleo",
@@ -503,31 +422,24 @@ manzanas = L.geoJson(Manzana, {
 
 
 function setProColor(d) {
-    if (currentStyle === 'DIST_SALUD') {
-        return d > 3000 ? '#d7191c' :
-            d > 2000 ? '#fdae61' :
-                d > 1000 ? '#f4f466' :
-                    d > 500 ? '#a6d96a' :
+    if (currentStyle === 'DxP_SALUD') {
+        return d > 2000 ? '#d7191c' :
+            d > 1000 ? '#fdae61' :
+                d > 500 ? '#f4f466' :
+                    d > 300 ? '#a6d96a' :
                     '#1a9641';
-    }else if (currentStyle === 'DIST_EDUC') {
+    }else if (currentStyle === 'DxP_EDUCA') {
         return d > 1000 ? '#d7191c' :
             d > 500 ? '#fdae61' :
                 d > 300 ? '#f4f466' :
                     d > 100 ? '#a6d96a' :
                     '#1a9641';
     } 
-    else if (currentStyle === 'DIST_EP') {
+    else if (currentStyle === 'DxP_EP') {
         return d > 10000 ? '#d7191c' :
             d > 5000 ? '#fdae61' :
-                d > 2000 ? '#f4f466' :
+                d > 3000 ? '#f4f466' :
                     d > 500 ? '#a6d96a' :
-                    '#1a9641';
-    }
-    else if (currentStyle === 'DenPob2019') {
-        return d > 15000 ? '#d7191c' :
-            d > 7000 ? '#fdae61' :
-                d > 6500 ? '#f4f466' :
-                    d > 5000 ? '#a6d96a' :
                     '#1a9641';
     }
     else if (currentStyle === 'MAT_ADE') {
@@ -600,49 +512,7 @@ function setProColor(d) {
                     d > 500 ? '#a6d96a' :
                     '#1a9641';
     }
-    else if (currentStyle === 'MIX_TENE') {
-        return d > 0.88 ? '#1a9641' :
-            d > 0.78 ? '#a6d96a' :
-                d > 0.69 ? '#f4f466' :
-                    d > 0.52 ? '#fdae61' :
-                      '#d7191c';
-    }
-    else if (currentStyle === 'MIX_ETNIA') {
-        return d > 0.50 ? '#1a9641' :
-            d > 0.37 ? '#a6d96a' :
-                d > 0.27 ? '#f4f466' :
-                    d > 0.18 ? '#fdae61' :
-                      '#d7191c';
-    }
-    else if (currentStyle === 'MIX_EDAD') {
-        return d > 1.46 ? '#1a9641' :
-            d > 1.38 ? '#a6d96a' :
-                d > 1.29 ? '#f4f466' :
-                    d > 1.11 ? '#fdae61' :
-                      '#d7191c';
-    }
-    else if (currentStyle === 'MIX_EDU') {
-        return d > 1.14 ? '#1a9641' :
-            d > 1.05 ? '#a6d96a' :
-                d > 0.97 ? '#f4f466' :
-                    d > 0.87 ? '#fdae61' :
-                      '#d7191c';
-    }
-    else if (currentStyle === 'BRECHA_E') {
-        return d > 1.09 ?  '#d7191c':
-            d > 0.96 ? '#fdae61' :
-                d > 0.89 ? '#f4f466' :
-                    d > 0.79 ? '#a6d96a' :
-                    '#1a9641';
-    }
-    else if (currentStyle === 'ESC_ANOS') {
-        return d > 13.78 ? '#1a9641' :
-            d > 12.34 ? '#a6d96a' :
-                d > 11.01 ? '#f4f466' :
-                    d > 9.31 ? '#fdae61' :
-                      '#d7191c';
-    }
-    else if (currentStyle === 'M2_EP_CA') {
+    else if (currentStyle === 'M2_ESP_EP') {
         return d > 14 ? '#1a9641' :
             d > 10 ? '#a6d96a' :
                 d > 4 ? '#f4f466' :
@@ -671,10 +541,10 @@ function setProColor(d) {
                     '#1a9641';
     }
     else if (currentStyle === 'Shannon') {
-        return d > 1.14 ? '#1a9641' :
-            d > 0.93 ? '#a6d96a' :
-                d > 0.74 ? '#f4f466' :
-                    d > 0.51 ? '#fdae61' :
+        return d > 0.86 ? '#1a9641' :
+            d > 0.59 ? '#a6d96a' :
+                d > 0.36 ? '#f4f466' :
+                    d > 0.15 ? '#fdae61' :
                       '#d7191c';
     }
     else if (currentStyle === 'DxP_Comer') {
@@ -703,13 +573,6 @@ function setProColor(d) {
             d > 41 ? '#fdae61' :
                 d > 22 ? '#f4f466' :
                     d > 7 ? '#a6d96a' :
-                    '#1a9641';
-    }
-    else if (currentStyle === 'BRECHA_D') {
-        return d > 1.61 ?  '#d7191c':
-            d > 0.91 ? '#fdae61' :
-                d > 0.50 ? '#f4f466' :
-                    d > 0.24 ? '#a6d96a' :
                     '#1a9641';
     }
     else {
